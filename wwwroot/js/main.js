@@ -7,16 +7,20 @@ class Example extends Phaser.Scene
 
     preload ()
     {
-        this.load.setBaseURL('https://labs.phaser.io');
+        //this.load.setBaseURL('https://labs.phaser.io');
 
-        this.load.image('sky', 'assets/skies/space3.png');
-        this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-        this.load.image('red', 'assets/particles/red.png');
+        this.load.image('sky', 'images/space3.png');
+        this.load.image('logo', 'images/phaser3-logo.png');
+        this.load.image('red', 'images/red.png');
+
+        this.load.spritesheet('naruto', 'images/naruto-run.png', { frameWidth: 80, frameHeight: 120 });
+
+        this.load.audio('cat', ['audios/meow.mp3', 'audios/meow.ogg']);
     }
 
     create ()
     {
-        this.add.image(0, 0, 'sky');
+        this.add.image(400, 300, 'sky');
     
         const particles = this.add.particles(0, 0, 'red', {
             speed: 100,
@@ -26,12 +30,32 @@ class Example extends Phaser.Scene
     
         const logo = this.physics.add.image(400, 50, 'logo');
     
-        //logo.setVelocity(-100, 200);
+        logo.setVelocity(-200, 200);
         logo.setBounce(1, 1);
         logo.setCollideWorldBounds(true);
     
-        window.setTimeout(function () {particles.startFollow(logo);}, 2000);
-        //particles.startFollow(logo);
+        particles.startFollow(logo);
+
+        // sprite example: naruto
+        this.naruto = this.add.sprite(50, 430, 'naruto');
+        
+        this.anims.create({
+            key: 'run',
+            frames: this.anims.generateFrameNumbers('naruto',
+            {
+                start: 0,
+                end: 5
+            }),
+            frameRate: 8,
+            repeat: -1
+        });
+
+        this.naruto.play('run');
+
+        // play sound
+
+        this.car = this.sound.add('cat');
+        this.car.play();
     }
 }
 
@@ -42,7 +66,7 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 0 }
+            gravity: { y: 2000 }
         }
     },
     scene: Example
