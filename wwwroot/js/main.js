@@ -14,6 +14,7 @@ class Example extends Phaser.Scene
         this.load.image('red', 'images/red.png');
 
         this.load.spritesheet('naruto', 'images/naruto-run.png', { frameWidth: 80, frameHeight: 120 });
+        this.load.spritesheet('fighter', 'images/fighter.png', { frameWidth: 200, frameHeight: 200 });
 
         this.load.audio('cat', ['audios/meow.mp3', 'audios/meow.ogg']);
     }
@@ -37,6 +38,7 @@ class Example extends Phaser.Scene
         particles.startFollow(logo);
 
         // sprite example: naruto
+
         this.naruto = this.add.sprite(50, 430, 'naruto');
         
         this.anims.create({
@@ -54,8 +56,115 @@ class Example extends Phaser.Scene
 
         // play sound
 
-        this.car = this.sound.add('cat');
-        this.car.play();
+        this.cat = this.sound.add('cat');
+        this.cat.play();
+
+        // keyboard control fighter
+
+        let keys = this.input.keyboard.addKeys({
+            up: 'up',
+            down: 'down',
+            left: 'left',
+            right: 'right'
+        });  // keys.up, keys.down, keys.left, keys.right
+        
+        var fighter = this.physics.add.sprite(100, 200, 'fighter');
+        fighter.scale = 0.6;
+        fighter.setCollideWorldBounds(true);
+
+        this.anims.create({
+            key: 'flight',
+            frames: this.anims.generateFrameNumbers('fighter',
+            {
+                start: 12,
+                end: 12
+            }),
+            frameRate: 8,
+            repeat: 0
+        });
+        this.anims.create({
+            key: 'flight-left',
+            frames: this.anims.generateFrameNumbers('fighter',
+            {
+                start: 12,
+                end: 10
+            }),
+            frameRate: 60,
+            repeat: 0
+        });
+        this.anims.create({
+            key: 'flight-right',
+            frames: this.anims.generateFrameNumbers('fighter',
+            {
+                start: 12,
+                end: 14
+            }),
+            frameRate: 60,
+            repeat: 0
+        });
+        
+        fighter.play('flight');
+
+        // flight left/right
+
+        keys.right.on('down',
+            function(evt) {
+                fighter.setVelocityX(300);
+                fighter.play('flight-right');
+            }
+        );
+        keys.right.on('up',
+            function(evt) {
+                if (!keys.left.isDown) {
+                    fighter.setVelocityX(0);
+                    fighter.play('flight');
+                }
+            }
+        );
+        keys.left.on('down',
+            function(evt) {
+                fighter.setVelocityX(-300);
+                fighter.play('flight-left');
+            }
+        );
+        keys.left.on('up',
+            function(evt) {
+                if (!keys.right.isDown) {
+                    fighter.setVelocityX(0);
+                    fighter.play('flight');
+                }
+            }
+        );
+
+        // flight up/down
+
+        keys.down.on('down',
+            function(evt) {
+                fighter.setVelocityY(300);
+            }
+        );
+        keys.down.on('up',
+            function(evt) {
+                if (!keys.up.isDown)
+                    fighter.setVelocityY(0);
+            }
+        );
+        keys.up.on('down',
+            function(evt) {
+                fighter.setVelocityY(-300);
+            }
+        );
+        keys.up.on('up',
+            function(evt) {
+                if (!keys.down.isDown)
+                    fighter.setVelocityY(0);
+            }
+        );
+    }
+
+    update()
+    {
+        //console.log("x");
     }
 }
 
@@ -66,7 +175,7 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 2000 }
+            gravity: { y: 0 }
         }
     },
     scene: Example
