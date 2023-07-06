@@ -15,6 +15,7 @@ export class preloader {
 
         scene.load.spritesheet('naruto', 'images/naruto-run.png', { frameWidth: 80, frameHeight: 120 });
         scene.load.spritesheet('fighter', 'images/fighter.png', { frameWidth: 200, frameHeight: 200 });
+        scene.load.spritesheet('asteroid', 'images/asteroid.png', { frameWidth: 128, frameHeight: 127 });
 
         scene.load.audio('meow', ['audios/meow.mp3', 'audios/meow.ogg']);
     }

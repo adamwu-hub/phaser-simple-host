@@ -18,4 +18,9 @@ export class logo {
 
         this.particles.startFollow(this.logo);
     }
+
+    destroy() {
+        this.logo.destroy();
+        this.particles.destroy();
+    }
 }
