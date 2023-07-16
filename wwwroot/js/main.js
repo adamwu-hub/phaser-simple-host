@@ -24,7 +24,8 @@ class Example extends Phaser.Scene
     {
         (new background(this)).load();
     
-        (new asteroid(this, 'a', 400, 400, 0.6, 0, 30)).load();
+        this.asteroid1 = new asteroid(this, 'a', 400, 400, 0.6, 0, 30);
+        this.asteroid1.load();
         (new asteroid(this, 'b', 500, 200, 1, 32, 62)).load();
 
         this.logos.push(new logo(this));

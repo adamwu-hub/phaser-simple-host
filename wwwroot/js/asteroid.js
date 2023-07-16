@@ -4,7 +4,7 @@ export class asteroid {
         this.id = id;
         this.scene = scene;
         
-        this.asteroid = this.scene.add.sprite(posX, posY, 'asteroid');
+        this.asteroid = this.scene.physics.add.sprite(posX, posY, 'asteroid');
         this.asteroid.scale = scale;
 
         this.scene.anims.create({
@@ -20,6 +20,7 @@ export class asteroid {
     }
 
     load() {
+        this.asteroid.setVelocity(130, 50);
         this.asteroid.play('roll' + this.id);
     }
 }
